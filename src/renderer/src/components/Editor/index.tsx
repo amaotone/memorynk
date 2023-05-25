@@ -1,37 +1,45 @@
-import { defaultKeymap } from '@codemirror/commands'
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
-import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
-import { Compartment } from '@codemirror/state'
-import { oneDarkHighlightStyle, oneDarkTheme } from '@codemirror/theme-one-dark'
-import { keymap } from '@codemirror/view'
-import { useCodeMirror } from '@renderer/hooks/useCodemirror'
+import { Box } from '@chakra-ui/react'
+import { markdown } from '@codemirror/lang-markdown'
+import { EditorState } from '@codemirror/state'
+import { oneDark } from '@codemirror/theme-one-dark'
+import { EditorView } from '@codemirror/view'
+import React, { useEffect, useRef } from 'react'
 
-const themeExtensions = {
-  light: [defaultHighlightStyle],
-  dark: [oneDarkTheme]
+interface EditorProps {
+  value: string
+  onChange: (value: string) => void
 }
-const languageConf = new Compartment()
 
-export const Editor: React.FC = () => {
-  const { render } = useCodeMirror({
-    defaultValue: '# hello world',
-    extensions: [
-      keymap.of(defaultKeymap),
-      ...themeExtensions.dark,
-      languageConf.of(
-        markdown({
-          base: markdownLanguage
-        })
-      ),
-      syntaxHighlighting(oneDarkHighlightStyle)
-    ],
-    disabled: false,
-    updateListener: (v) => {
-      if (v.docChanged || v.viewportChanged) {
-        console.log(v.state.doc.toString())
+export const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
+  const editorRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const startState = EditorState.create({
+        doc: value,
+        extensions: [
+          oneDark,
+          markdown(),
+          EditorView.updateListener.of((v) => {
+            if (v.docChanged) {
+              onChange(v.state.doc.toString())
+            }
+          })
+        ]
+      })
+
+      const view = new EditorView({
+        state: startState,
+        parent: editorRef.current
+      })
+
+      return () => {
+        view.destroy()
       }
     }
-  })
 
-  return <>{render()}</>
+    return () => {}
+  }, [value, onChange])
+
+  return <Box ref={editorRef} height="100%" />
 }
