@@ -1,45 +1,45 @@
-import { Box } from '@chakra-ui/react'
+import { historyField } from '@codemirror/commands'
 import { markdown } from '@codemirror/lang-markdown'
-import { EditorState } from '@codemirror/state'
-import { oneDark } from '@codemirror/theme-one-dark'
 import { EditorView } from '@codemirror/view'
-import React, { useEffect, useRef } from 'react'
+import CodeMirror from '@uiw/react-codemirror'
+import React from 'react'
 
 interface EditorProps {
   value: string
   onChange: (value: string) => void
 }
 
-export const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
-  const editorRef = useRef<HTMLDivElement>(null)
+const stateFields = { history: historyField }
 
-  useEffect(() => {
-    if (editorRef.current) {
-      const startState = EditorState.create({
-        doc: value,
-        extensions: [
-          oneDark,
-          markdown(),
-          EditorView.updateListener.of((v) => {
-            if (v.docChanged) {
-              onChange(v.state.doc.toString())
-            }
-          })
-        ]
-      })
-
-      const view = new EditorView({
-        state: startState,
-        parent: editorRef.current
-      })
-
-      return () => {
-        view.destroy()
-      }
+export const Editor: React.FC<EditorProps> = (props: EditorProps) => {
+  const serializedState = localStorage.getItem('editorState')
+  const value = localStorage.getItem('editorValue') || ''
+  const theme = EditorView.theme({
+    '&': {
+      fontSize: '16px'
+    },
+    '&.cm-editor.cm-focused': {
+      outline: 'none'
     }
-
-    return () => {}
-  }, [value, onChange])
-
-  return <Box ref={editorRef} height="100%" />
+  })
+  return (
+    <CodeMirror
+      theme={theme}
+      value={value}
+      extensions={[markdown()]}
+      initialState={
+        serializedState
+          ? {
+              json: JSON.parse(serializedState || ''),
+              fields: stateFields
+            }
+          : undefined
+      }
+      onChange={(value, viewUpdate): void => {
+        localStorage.setItem('editorValue', value)
+        const state = viewUpdate.state.toJSON(stateFields)
+        localStorage.setItem('editorState', JSON.stringify(state))
+      }}
+    />
+  )
 }
