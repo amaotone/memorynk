@@ -10,6 +10,7 @@ function createWindow(): void {
     height: 750,
     show: false,
     autoHideMenuBar: true,
+    titleBarStyle: 'hiddenInset',
     title: 'Memorynk',
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

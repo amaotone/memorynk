@@ -10,7 +10,7 @@ export const Sidebar: React.FC = () => {
         sx={{ overscrollBehavior: 'contain' }}
         top="0"
         w="240px"
-        h="100vh"
+        h="calc(100vh - 40px)"
         p="2"
         overflowY="auto"
         boxShadow="xs"
