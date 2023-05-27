@@ -31,7 +31,7 @@ export const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     <CodeMirror
       theme={theme}
       value={value}
-      height="calc(100vh - 40px)"
+      height="calc(100vh - var(--titlebar-height))"
       basicSetup={{
         lineNumbers: false,
         foldGutter: false,

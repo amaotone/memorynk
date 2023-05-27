@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react'
+import { Flex, IconButton } from '@chakra-ui/react'
 import { css } from '@emotion/react'
+import { FiSettings } from 'react-icons/fi'
 
 const titleBarStyle = css({
   WebkitAppRegion: 'drag'
@@ -9,30 +10,36 @@ const titleBarButtonStyle = css({
   WebkitAppRegion: 'no-drag'
 })
 
-export const TitleBar: React.FC = () => {
+interface Props {
+  height: string
+}
+
+export const TitleBar: React.FC<Props> = (props: Props) => {
+  const { height } = props
+
   return (
     <>
       <Flex
         as="header"
         width="100%"
-        height="40px"
-        backgroundColor="grey.400"
+        height={height}
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="right"
         padding="0 10px"
         position="sticky"
         top="0"
         borderBottom="1px solid #eee"
         boxSizing="border-box"
-        zIndex="9999"
+        zIndex="sticky"
         css={titleBarStyle}
       >
-        <Text>Memorynk</Text>
-        <Box>
-          <Button size="sm" marginRight="2" css={titleBarButtonStyle}>
-            button 1
-          </Button>
-        </Box>
+        <IconButton
+          color="gray"
+          size="sm"
+          variant="ghost"
+          aria-label="settings"
+          icon={<FiSettings />}
+        />
       </Flex>
     </>
   )

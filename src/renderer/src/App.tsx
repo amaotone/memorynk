@@ -1,4 +1,4 @@
-import { Box, Container, Flex } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { Editor } from './components/Editor'
 import { TitleBar } from './components/Header'
 import { Sidebar } from './components/Sidebar'
@@ -6,14 +6,14 @@ import { Sidebar } from './components/Sidebar'
 function App(): JSX.Element {
   return (
     <>
-      <TitleBar />
-      <Flex>
-        <Sidebar />
-        <Box flex="1">
-          <Container>
+      <Flex direction="column" height="100vh">
+        <TitleBar height="var(--titlebar-height)" />
+        <Flex>
+          <Sidebar />
+          <Box flex="1">
             <Editor value="hello, world" onChange={console.log} />
-          </Container>
-        </Box>
+          </Box>
+        </Flex>
       </Flex>
     </>
   )

@@ -20,6 +20,7 @@
     "build:linux": "electron-vite build && electron-builder --linux --config"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.1",
     "@codemirror/commands": "^6.2.4",
     "@codemirror/lang-markdown": "^6.1.1",
@@ -39,6 +40,8 @@
     "cm6-theme-basic-light": "^0.2.0",
     "electron-updater": "^5.3.0",
     "framer-motion": "^10.12.16",
+    "pouchdb": "^8.0.1",
+    "react-icons": "^4.8.0",
     "thememirror": "^2.0.1"
   },
   "devDependencies": {
