@@ -1,6 +1,6 @@
-import { Flex, IconButton } from '@chakra-ui/react'
+import { Divider, Flex, IconButton } from '@chakra-ui/react'
 import { css } from '@emotion/react'
-import { FiSettings } from 'react-icons/fi'
+import { FiEdit, FiSettings } from 'react-icons/fi'
 
 const titleBarStyle = css({
   WebkitAppRegion: 'drag'
@@ -33,6 +33,8 @@ export const TitleBar: React.FC<Props> = (props: Props) => {
         zIndex="sticky"
         css={titleBarStyle}
       >
+        <IconButton color="gray" size="sm" variant="ghost" aria-label="create" icon={<FiEdit />} />
+        <Divider orientation="vertical" height="20px" />
         <IconButton
           color="gray"
           size="sm"
